@@ -2,7 +2,7 @@ package com.example.todo.repository
 
 import com.example.todo.database.Todo
 import com.example.todo.database.TodoDataBase
-import org.springframework.beans.factory.annotation.Autowired
+
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
@@ -49,18 +49,23 @@ class TodoRepositoryImpl(
     }
 
 
-    override fun delete(todo: Todo): Boolean {
+    override fun delete(index: Int): Boolean {
         return try{
-            todoDataBase.todoList.remove(todo)
+            var target = findOne(index)
+            todoDataBase.todoList.remove(target)
             true
         }catch (e:Exception){
             false
         }
     }
 
-    override fun findOne(index: Int): Todo? {
-        return todoDataBase.todoList.first {
-            it.index == index
+    override fun findOne(index: Int?): Todo? {
+        return try{
+            todoDataBase.todoList.first {
+                it.index == index
+            }
+        }catch (e:Exception){
+            null
         }
     }
 
