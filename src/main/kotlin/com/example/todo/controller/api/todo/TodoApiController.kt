@@ -2,6 +2,9 @@ package com.example.todo.controller.api.todo
 
 import com.example.todo.model.http.TodoDto
 import com.example.todo.service.TodoListService
+import io.swagger.annotations.Api
+import io.swagger.annotations.ApiOperation
+import io.swagger.annotations.ApiParam
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -9,6 +12,7 @@ import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
 
+@Api(description = "일정관리")
 @RestController
 @RequestMapping("/api/todo")
 class TodoApiController (
@@ -16,8 +20,11 @@ class TodoApiController (
         ){
 
     //R
+    @ApiOperation(value = "일정확인", notes = "일정 확인 GET API")
     @GetMapping(path=[""])
-    fun read(@RequestParam(required = false) index:Int?): ResponseEntity<Any?> {
+    fun read(
+        @ApiParam(name = "index")
+        @RequestParam(required = false) index:Int?): ResponseEntity<Any?> {
         return index?.let{
             todoService.read(it)
         }?.let{
